@@ -11,7 +11,7 @@ from mailings.services import get_cache_for_mailings, get_cache_for_active_maili
 class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
     form_class = MailingForm
-    success_url = reverse_lazy('sendmail:mailing_list')
+    success_url = reverse_lazy('mailings:mailing_list')
     extra_context = {
         'title': 'Создание рассылки'
     }
@@ -32,7 +32,7 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
 class MailingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Mailing
     form_class = MailingForm
-    success_url = reverse_lazy('sendmail:mailing_list')
+    success_url = reverse_lazy('mailings:mailing_list')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -48,8 +48,8 @@ class MailingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class MailingUpdateModeratorView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Mailing
     form_class = MailingModeratorForm
-    success_url = reverse_lazy('sendmail:mailing_list')
-    permission_required = 'sendmail.set_is_activated'
+    success_url = reverse_lazy('mailings:mailing_list')
+    permission_required = 'mailings.set_is_activated'
 
 
 class MailingListView(LoginRequiredMixin, ListView):
@@ -61,7 +61,7 @@ class MailingListView(LoginRequiredMixin, ListView):
 
 class HomeView(ListView):
     model = Mailing
-    template_name = 'sendmail/home.html'
+    template_name = 'mailings/home.html'
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -86,18 +86,18 @@ class MailingDetailView(DetailView):
 
 class MailingDeleteView(DeleteView):
     model = Mailing
-    success_url = reverse_lazy('sendmail:mailing_list')
+    success_url = reverse_lazy('mailings:ling_list')
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
     model = Message
     form_class = MessageForm
-    success_url = reverse_lazy('sendmail:message_list')
+    success_url = reverse_lazy('mailings:message_list')
     extra_context = {
         'title': 'Создание сообщения'
     }
 
-    def form_valid(self, form):
+    def form_valid(self, fomairm):
         new_message = form.save()
         new_message.owner = self.request.user
         new_message.save()
@@ -109,7 +109,7 @@ class MessageUpdateView(LoginRequiredMixin, UpdateView):
     form_class = MessageForm
 
     def get_success_url(self):
-        return reverse('sendmail:message_view', args=[self.kwargs.get('pk')])
+        return reverse('mailings:message_view', args=[self.kwargs.get('pk')])
 
 
 class MessageDetailView(LoginRequiredMixin, DetailView):
@@ -130,7 +130,7 @@ class MessageListView(LoginRequiredMixin, ListView):
 
 class MessageDeleteView(LoginRequiredMixin, DeleteView):
     model = Message
-    success_url = reverse_lazy('sendmail:message_list')
+    success_url = reverse_lazy('mailings:message_list')
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -148,7 +148,7 @@ class ClientListView(LoginRequiredMixin, ListView):
 class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
     form_class = ClientForm
-    success_url = reverse_lazy('sendmail:client_list')
+    success_url = reverse_lazy('mailings:client_list')
     extra_context = {
         'title': 'Добавить клиента'
     }
@@ -163,7 +163,7 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
 class ClientUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Client
     form_class = ClientForm
-    success_url = reverse_lazy('sendmail:client_list')
+    success_url = reverse_lazy('mailings:client_list')
 
     def test_func(self):
         return self.request.user == Client.objects.get(pk=self.kwargs['pk']).owner

@@ -8,7 +8,6 @@
 </div>
 <div class="col-12">
     <div class="row">
-        {% for object in object_list %}
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
@@ -19,12 +18,13 @@
                         {% if object.comment %}
                             <p>{{ object.comment }}</p>
                         {% endif %}
-                        <a href="{% url 'mailings:client_view' object.pk %}"
-                           class="btn btn-sm btn-outline-secondary">Просмотр</a>
+                         <a href="{% url 'mailings:client_edit' object.pk %}"
+                               class="btn btn-sm btn-outline-primary">Редактировать</a>
+                            <a href="{% url 'mailings:client_delete' object.pk %}" type="button"
+                               class="btn btn-sm btn-outline-danger">Удалить</a>
                     </div>
                 </div>
             </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}

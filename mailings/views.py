@@ -97,7 +97,7 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
         'title': 'Создание сообщения'
     }
 
-    def form_valid(self, fomairm):
+    def form_valid(self, form):
         new_message = form.save()
         new_message.owner = self.request.user
         new_message.save()
@@ -167,3 +167,22 @@ class ClientUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         return self.request.user == Client.objects.get(pk=self.kwargs['pk']).owner
+
+
+class ClientDetailView(LoginRequiredMixin, DetailView):
+    model = Client
+
+
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
+    model = Client
+    success_url = reverse_lazy('mailings:client_list')
+
+
+class LogsListView(LoginRequiredMixin, ListView):
+    model = Logs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Отчет по рассылкам"
+        context['log_list'] = Logs.objects.all()
+        return context

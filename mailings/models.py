@@ -41,7 +41,7 @@ class Message(models.Model):
     Модель сообщения
     """
     title = models.CharField(max_length=250, verbose_name='тема')
-    content = models.TextField(verbose_name='содержание', default=True)
+    content = models.TextField(verbose_name='содержание', **NULLABLE)
 
     owner = models.ForeignKey(users.models.User, on_delete=models.CASCADE, null=True, verbose_name='Владелец сообщения')
 

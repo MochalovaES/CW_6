@@ -1,8 +1,8 @@
 from django.urls import path
 from django.views.generic import TemplateView
-
 from users.apps import UsersConfig
-from users.views import UserLogoutView, UserLoginView, RegisterView, verification, UserUpdateView, get_users_list
+from users.views import UserLogoutView, UserLoginView, RegisterView, verification, UserUpdateView, get_users_list, \
+    UserDeleteView
 
 app_name = UsersConfig.name
 
@@ -15,5 +15,6 @@ urlpatterns = [
     path('success_verify/', TemplateView.as_view(template_name='users/success_verify.html'), name='success_verify'),
     path('invalid_verify/', TemplateView.as_view(template_name='users/invalid_verify.html'), name='invalid_verify'),
     path('users_list/', get_users_list, name='list_view'),
-    path('edit/<int:pk>', UserUpdateView.as_view(), name='edit')
+    path('edit/<int:pk>', UserUpdateView.as_view(), name='edit'),
+    path('users_delete/<int:pk>/', UserDeleteView.as_view(), name='users_delete'),
 ]

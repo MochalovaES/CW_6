@@ -16,6 +16,7 @@
                                 <p>Активный</p>
                             {% endif %}
                             <a class="p-2 btn btn-outline-primary" href="{% url 'users:edit' object.pk %}">Редактировать</a>
+                            <a class="p-2 btn btn-outline-primary" href="{% url 'users:users_delete' object.pk %}">Удалить</a>
                         </div>
                     </div>
                 </div>

@@ -4,7 +4,7 @@ from mailings.apps import SendmailConfig
 from mailings.views import MessageListView, MessageCreateView, MessageUpdateView, \
     MessageDetailView, MessageDeleteView, MailingCreateView, MailingUpdateView, MailingDeleteView, MailingListView, \
     MailingDetailView, ClientListView, ClientCreateView, ClientUpdateView, MailingUpdateModeratorView, \
-    HomeView
+    HomeView, ClientDetailView, ClientDeleteView, LogsListView
 
 app_name = SendmailConfig.name
 
@@ -25,4 +25,7 @@ urlpatterns = [
     path('clients/', ClientListView.as_view(), name='client_list'),
     path('client_add/', ClientCreateView.as_view(), name='client_add'),
     path('client_edit/<int:pk>', ClientUpdateView.as_view(), name='client_edit'),
+    path('client_view/<int:pk>/', ClientDetailView.as_view(), name='client_view'),
+    path('client_delete/<int:pk>/', ClientDeleteView.as_view(), name='client_delete'),
+    path('logs_list/', LogsListView.as_view(), name='logs_list'),
 ]

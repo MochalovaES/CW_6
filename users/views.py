@@ -1,13 +1,13 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
-from django.urls import reverse
-from django.views.generic import CreateView, UpdateView
-from users.forms import RegisterForm, ModeratorForm
+from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView, UpdateView, DeleteView
+from users.forms import RegisterForm, ModeratorForm, UserForm
 from users.models import User
 from django.utils.crypto import get_random_string
 
@@ -54,14 +54,18 @@ def verification(request, verify_code):
         return redirect('users:invalid_verify')
 
 
-class UserUpdateView(PermissionRequiredMixin, UpdateView):
+class UserUpdateView(UpdateView):
     model = User
-    form_class = ModeratorForm
-    permission_required = 'set_is_active'
-    success_url = 'users:users_list'
+    success_url = reverse_lazy('users:list_view')
+    form_class = UserForm
 
-    def get_success_url(self):
-        return reverse('users:list_view')
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class UserDeleteView(LoginRequiredMixin, DeleteView):
+    model = User
+    success_url = reverse_lazy('users:users_list')
 
 
 @login_required
@@ -73,3 +77,4 @@ def get_users_list(request):
         'title': 'Список пользователей сервиса',
     }
     return render(request, 'users/users_list.html', context)
+

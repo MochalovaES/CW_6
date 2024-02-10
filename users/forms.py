@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
-
+from mailings.forms import StyleFormMixin
 from users.models import User
 
 
@@ -21,3 +21,11 @@ class ModeratorForm(UserChangeForm):
         super().__init__(*args, **kwargs)
 
         self.fields['password'].widget = forms.HiddenInput()
+
+
+class UserForm(StyleFormMixin, UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('email',)
+
+
